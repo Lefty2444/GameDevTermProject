@@ -1,18 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
     
     public GameObject pauseMenuUI;
+    public GameObject gameOverMenuUI;
 
     public static bool paused;
 
     
     // Start is called before the first frame update
     void Start(){
+        Time.timeScale = 1f;
         pauseMenuUI.SetActive(false);
+        gameOverMenuUI.SetActive(false);
         paused = false;
     }
 
@@ -25,6 +29,10 @@ public class PauseMenu : MonoBehaviour
                 Pause();
             }
         }
+        if (Movement.player.hearts <= 0)
+        {
+            GameOver();
+        }
 
         
     }
@@ -33,6 +41,20 @@ public class PauseMenu : MonoBehaviour
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
         paused = false;
+    }
+
+    public void PlayAgain()
+    {
+        pauseMenuUI.SetActive(false);
+        Time.timeScale = 1f;
+        paused = false;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    public void GameOver()
+    {
+        gameOverMenuUI.SetActive(true);
+        Time.timeScale = 0f;
+        paused = true;
     }
 
     void Pause(){
